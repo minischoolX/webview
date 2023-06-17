@@ -23,6 +23,19 @@ public class MainActivity extends Activity {
         // REMOTE RESOURCE
         mWebView.loadUrl("https://m.youtube.com");
 
+            String adBlockerCode = "(function() {\n" +
+                "  const originalOpen = XMLHttpRequest.prototype.open;\n" +
+                "  XMLHttpRequest.prototype.open = function(method, url, async, user, password) {\n" +
+                "    if (url.includes('googleadservices.com') || url.includes('doubleclick.net')) {\n" +
+                "      // Do not proceed with the request\n" +
+                "      return;\n" +
+                "    }\n" +
+                "    originalOpen.apply(this, arguments);\n" +
+                "  };\n" +
+                "})();";
+            mWebView.evaluateJavascript(adBlockerCode, null)
+        
+        
                 // Inject the JavaScript code into the WebView's page
                 String javascriptCode = "setTimeout(function() {\n" +
                         "  // Get the current URL\n" +
@@ -46,17 +59,6 @@ public class MainActivity extends Activity {
                         "function handleURLChange() {\n" +
 //                        "  if (hasValidHost && hasValidQuery) {\n" +
                         "\n" +                    
-                        "(function() {\n" +
-                        "  const originalOpen = XMLHttpRequest.prototype.open;\n" +
-                        "  XMLHttpRequest.prototype.open = function(method, url, async, user, password) {\n" +
-                        "    if (url.includes('googleadservices.com') || url.includes('doubleclick.net')) {\n" +
-                        "      // Do not proceed with the request\n" +
-                        "      return;\n" +
-                        "    }\n" +
-                        "    originalOpen.apply(this, arguments);\n" +
-                        "  };\n" +
-                        "})();";\n" +
-                        "\n" +
                         "    function getVideoIdFromUrl(url) {\n" +
                         "      let id = \"\";\n" +
                         "      try {\n" +
