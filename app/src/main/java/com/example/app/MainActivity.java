@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
                         "    }\n" +
                         "    originalOpen.apply(this, arguments);\n" +
                         "  };\n" +
-                        "})();";
+                        "})();";\n" +
                         "\n" +
                         "    function getVideoIdFromUrl(url) {\n" +
                         "      let id = \"\";\n" +
