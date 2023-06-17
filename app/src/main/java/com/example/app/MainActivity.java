@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.JsAlert;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -20,6 +23,19 @@ public class MainActivity extends Activity {
         webSettings.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new MyWebViewClient());
 
+mWebView.setWebChromeClient(new WebChromeClient() {
+    @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+        // Handle the alert here
+        // You can display it as a toast or perform any other action
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+        result.confirm(); // Confirm the alert
+        return true; // Return true to indicate that you've handled the alert
+    }
+});
+
+        
         // REMOTE RESOURCE
         mWebView.loadUrl("https://m.youtube.com");
 
