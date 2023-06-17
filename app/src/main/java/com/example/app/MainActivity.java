@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.JsAlert;
+import android.webkit.JsResult;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
