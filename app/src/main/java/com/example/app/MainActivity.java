@@ -192,7 +192,7 @@ public class MainActivity extends Activity {
                         "    maximizeButton.addEventListener(\"click\", () => {\n" +
                         "      floatingBlock.style.height = \"50vh\";\n" +
                         "    });\n" +
-                        "  }\n" +
+//                        "  }\n" +
                         "}\n" +
                         "\n" +
                         "// Event listener for URL change\n" +
