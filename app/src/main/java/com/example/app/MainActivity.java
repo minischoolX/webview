@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
                         "\n" +
                         "function handleURLChange() {\n" +
 //                        "  if (hasValidHost && hasValidQuery) {\n" +
-                    
+                        "\n" +                    
                         "(function() {\n" +
                         "  const originalOpen = XMLHttpRequest.prototype.open;\n" +
                         "  XMLHttpRequest.prototype.open = function(method, url, async, user, password) {\n" +
@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
                         "    originalOpen.apply(this, arguments);\n" +
                         "  };\n" +
                         "})();";
-        
+                        "\n" +
                         "    function getVideoIdFromUrl(url) {\n" +
                         "      let id = \"\";\n" +
                         "      try {\n" +
