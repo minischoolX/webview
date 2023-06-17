@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
                 "    originalOpen.apply(this, arguments);\n" +
                 "  };\n" +
                 "})();";
-            mWebView.evaluateJavascript(adBlockerCode, null)
+            mWebView.evaluateJavascript(adBlockerCode, null);
         
         
                 // Inject the JavaScript code into the WebView's page
