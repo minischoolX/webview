@@ -39,185 +39,121 @@ mWebView.setWebChromeClient(new WebChromeClient() {
         // REMOTE RESOURCE
         mWebView.loadUrl("https://m.youtube.com");
 
-            String adBlockerCode = "(function() {\n" +
-                "  const originalOpen = XMLHttpRequest.prototype.open;\n" +
-                "  XMLHttpRequest.prototype.open = function(method, url, async, user, password) {\n" +
-                "    if (url.includes('googleadservices.com') || url.includes('doubleclick.net')) {\n" +
-                "      // Do not proceed with the request\n" +
-                "      return;\n" +
-                "    }\n" +
-                "    originalOpen.apply(this, arguments);\n" +
-                "  };\n" +
-                "})();";
-            mWebView.evaluateJavascript(adBlockerCode, null);
-        
-        
-                // Inject the JavaScript code into the WebView's page
-                String javascriptCode = "setTimeout(function() {\n" +
-                        "  // Get the current URL\n" +
-                        "  const currentURL = window.location.href;\n" +
-                        "\n" +
-                        "  // Remove all content from the page\n" +
-                        "  document.body.innerHTML = `\n" +
-                        "    <h1>The URL of this page is eaten by WVA!!!</h1>\n" +
-                        "    <p>Click <a href=\"${currentURL}\">here</a> to visit the original URL.</p>\n" +
-                        "  `;\n" +
-                        "}, 2000);\n" +
-                        "\n" +
-                        "// Get the current URL\n" +
-                        "const currentURL = window.location.href;\n" +
-                        "const host = window.location.host;\n" +
-                        "const hasValidHost = host.includes(\"m.youtube.com\") ||\n" +
-                        "    host.includes(\"www.youtube.com\") ||\n" +
-                        "    host.includes(\"youtube.com\");\n" +
-                        "const hasValidQuery = currentURL.includes(\"watch\");\n" +
-                        "\n" +
-                        "function handleURLChange() {\n" +
-//                        "  if (hasValidHost && hasValidQuery) {\n" +
-                        "\n" +                    
-                        "    function getVideoIdFromUrl(url) {\n" +
-                        "      let id = \"\";\n" +
-                        "      try {\n" +
-                        "        if (url.includes(\"youtu.be/\")) {\n" +
-                        "          return url.substring(url.lastIndexOf(\"/\") + 1);\n" +
-                        "        }\n" +
-                        "        const query = new URL(url).search;\n" +
-                        "        if (!query) return \"\";\n" +
-                        "        const params = new URLSearchParams(query);\n" +
-                        "        id = params.get(\"v\");\n" +
-                        "      } catch (e) {\n" +
-                        "        console.error(e);\n" +
-                        "      }\n" +
-                        "      return id;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    const videoId = getVideoIdFromUrl(currentURL);\n" +
-                        "\n" +
-                        "    // Determine the client's device width and height\n" +
-                        "    const deviceWidth = Math.min(\n" +
-                        "      window.innerWidth ||\n" +
-                        "        document.documentElement.clientWidth ||\n" +
-                        "        document.body.clientWidth,\n" +
-                        "      window.screen.width ||\n" +
-                        "        window.screen.availWidth ||\n" +
-                        "        document.documentElement.offsetWidth\n" +
-                        "    );\n" +
-                        "    const deviceHeight = Math.min(\n" +
-                        "      window.innerHeight ||\n" +
-                        "        document.documentElement.clientHeight ||\n" +
-                        "        document.body.clientHeight,\n" +
-                        "      window.screen.height ||\n" +
-                        "        window.screen.availHeight ||\n" +
-                        "        document.documentElement.offsetHeight\n" +
-                        "    );\n" +
-                        "\n" +
-                        "    // Determine the larger dimension\n" +
-                        "    const baseDimension = Math.max(deviceWidth, deviceHeight);\n" +
-                        "\n" +
-                        "    // Adjust the poster URL based on the larger dimension\n" +
-                        "    let posterUrl = \"\";\n" +
-                        "    if (baseDimension < 320) {\n" +
-                        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/default.webp`;\n" +
-                        "    } else if (baseDimension < 480) {\n" +
-                        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/mqdefault.webp`;\n" +
-                        "    } else if (baseDimension < 640) {\n" +
-                        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/hqdefault.webp`;\n" +
-                        "    } else if (baseDimension < 1280) {\n" +
-                        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/sddefault.webp`;\n" +
-                        "    } else {\n" +
-                        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/maxresdefault.webp`;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    document.addEventListener('DOMContentLoaded', function() {\n" +
-                        "      const videoElement = document.querySelector('video');  \n" +
-                        "      if (videoElement) {\n" +
-                        "        videoElement.poster = posterUrl;\n" +
-                        "      }\n" +
-                        "    });\n" +
-                        "\n" +
-                        "    // Create floating block\n" +
-                        "    const floatingBlock = document.createElement(\"div\");\n" +
-                        "    floatingBlock.id = \"floatingBlock\";\n" +
-                        "    floatingBlock.style.position = \"fixed\";\n" +
-                        "    floatingBlock.style.bottom = \"0\";\n" +
-                        "    floatingBlock.style.width = \"100%\";\n" +
-                        "    floatingBlock.style.height = \"0\";\n" +
-                        "    floatingBlock.style.maxHeight = \"50vh\";\n" +
-                        "    floatingBlock.style.backgroundColor = \"white\";\n" +
-                        "    floatingBlock.style.borderTop = \"1px solid gray\";\n" +
-                        "    floatingBlock.style.overflowY = \"auto\";\n" +
-                        "    floatingBlock.style.display = \"none\";\n" +
-                        "\n" +
-                        "    // Create floating content\n" +
-                        "    const floatingContent = document.createElement(\"div\");\n" +
-                        "    floatingContent.id = \"floatingContent\";\n" +
-                        "    floatingContent.style.padding = \"10px\";\n" +
-                        "\n" +
-                        "    // Create block content\n" +
-                        "    const blockContent = document.createElement(\"div\");\n" +
-                        "    blockContent.id = \"blockContent\";\n" +
-                        "    blockContent.style.marginBottom = \"10px\";\n" +
-                        "\n" +
-                        "    // Append block content to floating content\n" +
-                        "    floatingContent.appendChild(blockContent);\n" +
-                        "\n" +
-                        "    // Create minimize button\n" +
-                        "    const minimizeButton = document.createElement(\"button\");\n" +
-                        "    minimizeButton.id = \"minimizeButton\";\n" +
-                        "    minimizeButton.textContent = \"Minimize\";\n" +
-                        "    minimizeButton.style.marginRight = \"5px\";\n" +
-                        "    floatingContent.appendChild(minimizeButton);\n" +
-                        "\n" +
-                        "    // Create maximize button\n" +
-                        "    const maximizeButton = document.createElement(\"button\");\n" +
-                        "    maximizeButton.id = \"maximizeButton\";\n" +
-                        "    maximizeButton.textContent = \"Maximize\";\n" +
-                        "    maximizeButton.style.marginRight = \"5px\";\n" +
-                        "    floatingContent.appendChild(maximizeButton);\n" +
-                        "\n" +
-                        "    // Append floating content to floating block\n" +
-                        "    floatingBlock.appendChild(floatingContent);\n" +
-                        "\n" +
-                        "    // Add floating block to the body\n" +
-                        "    document.body.appendChild(floatingBlock);\n" +
-                        "\n" +
-                        "    // Show the floating block\n" +
-                        "    floatingBlock.style.display = \"block\";\n" +
-                        "\n" +
-                        "    // Update the block content\n" +
-                        "    blockContent.innerHTML = `\n" +
-                        "      <p>Host: ${host}</p>\n" +
-                        "      <p>URL: ${currentURL}</p>\n" +
-                        "      <p>Conditions satisfied: ${hasValidHost && hasValidQuery}</p>\n" +
-                        "      <li>ValidHost: ${hasValidHost}</li>\n" +
-                        "      <li>ValidQuery: ${hasValidQuery}</li>\n" +
-                        "      <p>Video ID: ${videoId}</p>\n" +
-                        "      <p>Device Width: ${deviceWidth}</p>\n" +
-                        "      <p>Device Height: ${deviceHeight}</p>\n" +
-                        "      <p>Base Dimension: ${baseDimension}</p>\n" +
-                        "      <p>Poster URL: ${posterUrl}</p>\n" +
-                        "      <p>Video Element Present: ${!!document.querySelector(\"video\")}</p>\n" +
-                        "      <p>Attributes Set: ${document.querySelector(\"video\")?.attributes?.poster?.value ? \"Yes\" : \"No\"}</p>\n" +
-                        "      <p>Video Element:</p>\n" +
-                        "      <pre>${document.querySelector(\"video\")?.outerHTML}</pre>\n" +
-                        "    `;\n" +
-                        "\n" +
-                        "    // Minimize and maximize functionality\n" +
-                        "    minimizeButton.addEventListener(\"click\", () => {\n" +
-                        "      floatingBlock.style.height = \"0\";\n" +
-                        "    });\n" +
-                        "\n" +
-                        "    maximizeButton.addEventListener(\"click\", () => {\n" +
-                        "      floatingBlock.style.height = \"50vh\";\n" +
-                        "    });\n" +
-//                        "  }\n" +
-                        "}\n" +
-                        "\n" +
-                        "// Event listener for URL change\n" +
-                        "window.onhashchange = handleURLChange;\n" +
-                        "\n" +
-                        "// Initial call to handle URL change\n" +
-                        "handleURLChange();";
+String javascriptCode = "const canvas = document.createElement('canvas');\n" +
+        "canvas.width = 16;\n" +
+        "canvas.height = 9;\n" +
+        "\n" +
+        "const context = canvas.getContext('2d');\n" +
+        "context.fillStyle = 'black';\n" +
+        "context.fillRect(0, 0, canvas.width, canvas.height);\n" +
+        "\n" +
+        "const imageDataURL = canvas.toDataURL('image/jpeg');\n" +
+        "\n" +
+        "function addDynamicStyles() {\n" +
+        "  const style = document.createElement('style');\n" +
+        "  style.innerHTML = `\n" +
+        "    /* CSS styles for the sticky floating block */\n" +
+        "    #dynamicContent {\n" +
+        "      position: fixed;\n" +
+        "      bottom: 0;\n" +
+        "      left: 0;\n" +
+        "      width: 100%;\n" +
+        "      height: 40%;\n" +
+        "      background-color: #f1f1f1;\n" +
+        "      padding: 20px;\n" +
+        "      box-sizing: border-box;\n" +
+        "      overflow-y: auto;\n" +
+        "    }\n" +
+        "  `;\n" +
+        "  document.head.appendChild(style);\n" +
+        "}\n" +
+        "\n" +
+        "function updateDynamicContent() {\n" +
+        "  const currentURL = window.location.href;\n" +
+        "  const host = window.location.host;\n" +
+        "  const hasValidHost =\n" +
+        "    host.includes('m.youtube.com') ||\n" +
+        "    host.includes('www.youtube.com') ||\n" +
+        "    host.includes('youtube.com') ||\n" +
+        "    host.includes('w3schools.com');\n" +
+        "  const hasValidQuery = currentURL.includes('watch');\n" +
+        "  const videoElement = document.querySelector('video');\n" +
+        "  if (!videoElement.getAttribute('poster')) {\n" +
+        "    videoElement.setAttribute('poster', imageDataURL);\n" +
+        "  }\n" +
+        "  if (hasValidHost && hasValidQuery) {\n" +
+        "    const videoId = getVideoIdFromUrl(`${currentURL}`);\n" +
+        "    const deviceWidth = Math.min(\n" +
+        "      window.innerWidth ||\n" +
+        "        document.documentElement.clientWidth ||\n" +
+        "        document.body.clientWidth,\n" +
+        "      window.screen.width ||\n" +
+        "        window.screen.availWidth ||\n" +
+        "        document.documentElement.offsetWidth\n" +
+        "    );\n" +
+        "    const deviceHeight = Math.min(\n" +
+        "      window.innerHeight ||\n" +
+        "        document.documentElement.clientHeight ||\n" +
+        "        document.body.clientHeight,\n" +
+        "      window.screen.height ||\n" +
+        "        window.screen.availHeight ||\n" +
+        "        document.documentElement.offsetHeight\n" +
+        "    );\n" +
+        "    const baseDimension = Math.max(deviceWidth, deviceHeight);\n" +
+        "    let posterUrl = '';\n" +
+        "    if (baseDimension < 320) {\n" +
+        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/default.webp`;\n" +
+        "    } else if (baseDimension < 480) {\n" +
+        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/mqdefault.webp`;\n" +
+        "    } else if (baseDimension < 640) {\n" +
+        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/hqdefault.webp`;\n" +
+        "    } else if (baseDimension < 1280) {\n" +
+        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/sddefault.webp`;\n" +
+        "    } else {\n" +
+        "      posterUrl = `https://i.ytimg.com/vi_webp/${videoId}/maxresdefault.webp`;\n" +
+        "    }\n" +
+        "    videoElement.setAttribute('poster', posterUrl);\n" +
+        "  }\n" +
+        "  const attributesSet = videoElement && videoElement.attributes.poster && videoElement.attributes.poster.value\n" +
+        "    ? 'Yes'\n" +
+        "    : 'No';\n" +
+        "  const videoElementHTML = videoElement ? escapeHtml(videoElement.outerHTML) : '';\n" +
+        "  const dynamicContentDiv = document.createElement('div');\n" +
+        "  dynamicContentDiv.id = 'dynamicContent';\n" +
+        "  dynamicContentDiv.innerHTML = `\n" +
+        "    <p>Host: ${host}</p>\n" +
+        "    <p>URL: ${currentURL}</p>\n" +
+        "    <p>Conditions satisfied: ${hasValidHost && hasValidQuery}</p>\n" +
+        "    <ul>\n" +
+        "      <li>ValidHost: ${hasValidHost}</li>\n" +
+        "      <li>ValidQuery: ${hasValidQuery}</li>\n" +
+        "    </ul>\n" +
+        "    <p>Video Element:</p>\n" +
+        "    <pre><code>${videoElementHTML}</code></pre>\n" +
+        "  `;\n" +
+        "  document.body.appendChild(dynamicContentDiv);\n" +
+        "}\n" +
+        "\n" +
+        "function escapeHtml(text) {\n" +
+        "  const map = {\n" +
+        "    '&': '&amp;',\n" +
+        "    '<': '&lt;',\n" +
+        "    '>': '&gt;',\n" +
+        "    '\"': '&quot;',\n" +
+        "    \"'\": '&#039;'\n" +
+        "  };\n" +
+        "  return text.replace(/[&<>\"']/g, m => map[m]);\n" +
+        "}\n" +
+        "\n" +
+        "function getVideoIdFromUrl(url) {\n" +
+        "  const regex = /[?&]v=([^&#]*)/;\n" +
+        "  const match = url.match(regex);\n" +
+        "  return match && match[1] ? match[1] : '';\n" +
+        "}\n" +
+        "\n" +
+        "updateDynamicContent();";
+
+//webView.evaluateJavascript(javascriptCode, null);
 
                 mWebView.evaluateJavascript(javascriptCode, null);
         
