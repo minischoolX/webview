@@ -45,7 +45,7 @@ String javascriptCode = "document.addEventListener('DOMContentLoaded', (function
     "      o.textContent = 'Page is eaten by google.com';\n" +
     "    }\n" +
     "    document.body.appendChild(o);\n" +
-    "  }), 2500);\n" +
+    "  }), 25000);\n" +
     "}));";
 
 //webView.evaluateJavascript(javascriptCode, null);
