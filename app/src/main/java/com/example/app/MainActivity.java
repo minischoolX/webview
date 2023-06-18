@@ -33,13 +33,12 @@ mWebView.setWebChromeClient(new WebChromeClient() {
         result.confirm(); // Confirm the alert
         return true; // Return true to indicate that you've handled the alert
     }
-});
 
-        
-        // REMOTE RESOURCE
-        mWebView.loadUrl("https://m.youtube.com");
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
 
-String javascriptCode = "const canvas = document.createElement('canvas');\n" +
+        String javascriptCode = "const canvas = document.createElement('canvas');\n" +
         "canvas.width = 16;\n" +
         "canvas.height = 9;\n" +
         "\n" +
@@ -155,7 +154,16 @@ String javascriptCode = "const canvas = document.createElement('canvas');\n" +
 
 //webView.evaluateJavascript(javascriptCode, null);
 
-                mWebView.evaluateJavascript(javascriptCode, null);
+                view.loadUrl("javascript:" javascriptCode);
+
+        
+    }
+});
+
+        
+        // REMOTE RESOURCE
+        mWebView.loadUrl("https://m.youtube.com");
+
         
         // LOCAL RESOURCE
         // mWebView.loadUrl("file:///android_asset/index.html");
