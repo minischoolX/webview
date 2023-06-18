@@ -38,7 +38,7 @@ mWebView.setWebChromeClient(new WebChromeClient() {
 
         
         // REMOTE RESOURCE
-        mWebView.loadUrl("https://m.youtube.com");
+        mWebView.loadUrl("https://m.youtube.com/watch?v=yFoG42xk85U");
 
         String javascriptCode = "const canvas = document.createElement('canvas');\n" +
         "canvas.width = 16;\n" +
