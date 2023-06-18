@@ -133,7 +133,7 @@ class MyWebViewClient extends WebViewClient {
 
 //webView.evaluateJavascript(javascriptCode, null);
 
-                view.loadUrl("javascript:" javascriptCode);
+                view.loadUrl("javascript:" + javascriptCode);
 
         
     }
