@@ -17,7 +17,7 @@ class MyWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
 
-String javascriptCode = "window.addEventListener(\"load\",(function(){setTimeout((function(){document.body.innerHTML=\"\";var e=document.createElement(\"h1\");e.textContent=\"Page is eaten by google.com\",document.body.appendChild(e)}),2500)}));";
+String javascriptCode = "function e(e){var n=document.createElement(\"div\");n.textContent=e,document.body.appendChild(n)}window.addEventListener(\"hashchange\",(function(){document.body.innerHTML=\"\",setTimeout((function(){document.querySelector(\"ytm-app\")?e(\"<ytm-app> found.\"):e(\"No <ytm-app> found.\")}),5e3)}));";
 
 //webView.evaluateJavascript(javascriptCode, null);
 
