@@ -31,8 +31,7 @@ public class MainActivity extends Activity {
         mWebView = findViewById(R.id.activity_main_webview);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        String userAgent = "Mozilla/5.0 (X11; U; Linux i686;en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";    
-        webSettings.setUserAgentString(userAgent);
+        webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
         //mWebView.setWebViewClient(new MyWebViewClient());
         
         VMCScript contentScript = new VMCScript(this);
@@ -54,7 +53,9 @@ public class MainActivity extends Activity {
 
         
         // REMOTE RESOURCE
-        mWebView.loadUrl("https://www.youtube.com/");
+        mWebView.loadUrl("https://www.google.com/");
+        contentScript.executeBackgroundScript();
+        
 //        String javascriptCode = ""function e(){function e(){var e=document.getElementsByTagName(\"video\");if(e.length>0){e[0].outerHTML;window.location.href.match(/^https:\\/\\/m\\.youtube\\.com\\/watch\\?v=/)?function(){var e=document.querySelector(\"video\"),t=function(e){let t=\"\";try{if(e.includes(\"youtu.be/\"))return e.substring(e.lastIndexOf(\"/\")+1);var n=new URL(e).search;if(!n)return\"\";t=new URLSearchParams(n).get(\"v\")}catch(e){console.error(e)}return t}(window.location.href),n=Math.min(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,window.screen.width||window.screen.availWidth||document.documentElement.offsetWidth),i=Math.min(window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,window.screen.height||window.screen.availHeight||document.documentElement.offsetHeight),o=Math.max(n,i);let d=\"\";d=o<320?`https://i.ytimg.com/vi_webp/${t}/default.webp`:o<480?`https://i.ytimg.com/vi_webp/${t}/mqdefault.webp`:o<640?`https://i.ytimg.com/vi_webp/${t}/hqdefault.webp`:o<1280?`https://i.ytimg.com/vi_webp/${t}/sddefault.webp`:`https://i.ytimg.com/vi_webp/${t}/maxresdefault.webp`;e.setAttribute(\"poster\",d),console.log(\"poster has been set with: \"+d+\"\\n\\nbaseDimension :\\n\\n\"+o)}():window.location.href.match(/^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=/)||e.hasAttribute(\"poster\")}}e(),window.addEventListener(\"hashchange\",e)}window.location.href.match(/^https:\\/\\/m\\.youtube\\.com\\//)?window.addEventListener(\"state-navigateend\",e):window.addEventListener(\"DOMContentLoaded\",e);";
 //        mWebView.loadUrl("javascript:" + javascriptCode);
 //webView.evaluateJavascript(javascriptCode, null);
@@ -73,6 +74,13 @@ public class MainActivity extends Activity {
             this.scripts = new ArrayList<>();
             scripts.add("injected.js");
             scripts.add("injected-web.js");
+        }
+
+        public void executeBackgroundScript() {
+            String backgroundScript = loadJavascriptFromFile("Violentmonkey/background/index.js");
+            if (!TextUtils.isEmpty(backgroundScript)) {
+                webView.evaluateJavascript(backgroundScript, null);
+            }
         }
 
         @JavascriptInterface
