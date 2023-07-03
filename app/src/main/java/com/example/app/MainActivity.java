@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         public void executeBackgroundScript() {
             String backgroundScript = loadJavascriptFromFile("Violentmonkey/background/index.js");
             if (!TextUtils.isEmpty(backgroundScript)) {
-                webView.evaluateJavascript(backgroundScript, null);
+                mWebView.evaluateJavascript(backgroundScript, null);
             }
         }
 
