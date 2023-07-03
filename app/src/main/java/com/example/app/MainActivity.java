@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mWebView = findViewById(R.id.activity_main_webview);
         WebSettings webSettings = mWebView.getSettings();
+        mWebView.setWebContentsDebuggingEnabled(true);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
         //mWebView.setWebViewClient(new MyWebViewClient());
