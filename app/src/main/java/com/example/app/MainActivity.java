@@ -7,7 +7,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.webkit.WebViewClient;
-
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class MainActivity extends Activity {
 
@@ -31,6 +34,10 @@ public class MainActivity extends Activity {
         String userAgent = "Mozilla/5.0 (X11; U; Linux i686;en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";    
         webSettings.setUserAgentString(userAgent);
         //mWebView.setWebViewClient(new MyWebViewClient());
+        
+        VMCScript contentScript = new VMCScript(this);
+        mWebView.addJavascriptInterface(contentScript, "ContentScript");
+
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -45,8 +52,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        VMCScript contentScript = new VMCScript(this);
-        mWebView.addJavascriptInterface(contentScript, "ContentScript");
         
         // REMOTE RESOURCE
         mWebView.loadUrl("https://www.youtube.com/");
