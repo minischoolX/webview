@@ -6,6 +6,15 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
+import android.webkit.WebViewClient;
+
+import android.text.TextUtils;
+import android.webkit.JavascriptInterface;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
