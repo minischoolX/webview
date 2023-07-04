@@ -13,7 +13,7 @@ import android.webkit.JavascriptInterface;
 import android.graphics.Bitmap;
 import java.io.IOException;
 import java.io.InputStream;
-
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -49,7 +49,10 @@ public class MainActivity extends Activity {
             String script = new String(buffer);
 
             view.evaluateJavascript(script, null);
+            Toast.makeText(MainActivity.this, "javascript injected: " + url, Toast.LENGTH_SHORT).show();
+
         } catch (IOException e) {
+            Toast.makeText(MainActivity.this, "javascript didn't inject ", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
                     //view.loadUrl("file:///android_asset/script.js");
