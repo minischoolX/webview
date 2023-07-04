@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         WebSettings webSettings = mWebView.getSettings();
         mWebView.setWebContentsDebuggingEnabled(true);
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Safari/537.36");
+        //webSettings.setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Safari/537.36");
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
