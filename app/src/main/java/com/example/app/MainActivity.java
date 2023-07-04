@@ -11,6 +11,9 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.graphics.Bitmap;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class MainActivity extends Activity {
 
@@ -31,9 +34,25 @@ public class MainActivity extends Activity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
                 if (url.matches("^(https?://(www|m)\\.youtube\\.com/.*)|(https?://.*\\.youtube-nocookie\\.com/embed/.*)|(https?://youtube\\.googleapis\\.com/embed/.*)|(https?://raingart\\.github\\.io/options\\.html.*)$") &&
                     !url.matches("^(https?://.*\\.youtube\\.com/.*\\.xml.*)|(https?://.*\\.youtube\\.com/error.*)|(https?://music\\.youtube\\.com/.*)|(https?://accounts\\.youtube\\.com/.*)|(https?://studio\\.youtube\\.com/.*)|(https?://.*\\.youtube\\.com/redirect\\?.*)$")) {
-                    view.loadUrl("file:///android_asset/script.js");
+                    
+
+        // Inject JavaScript code from the assets folder
+        try {
+            InputStream inputStream = getAssets().open("script.js");
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            String script = new String(buffer);
+
+            view.evaluateJavascript(script, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+                    //view.loadUrl("file:///android_asset/script.js");
                     //mWebView.evaluateJavascript(script, null);
                 }
             }
